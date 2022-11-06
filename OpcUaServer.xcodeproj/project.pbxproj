@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		187EF1E2291725B800D9EB10 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 187EF1E1291725B800D9EB10 /* main.c */; };
 		187EF1EB2917FA6E00D9EB10 /* opcua.c in Sources */ = {isa = PBXBuildFile; fileRef = 187EF1EA2917FA6E00D9EB10 /* opcua.c */; };
+		187EF1F1291801BF00D9EB10 /* message.c in Sources */ = {isa = PBXBuildFile; fileRef = 187EF1F0291801BF00D9EB10 /* message.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,10 @@
 		187EF1E1291725B800D9EB10 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		187EF1E92917FA6E00D9EB10 /* opcua.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = opcua.h; sourceTree = "<group>"; };
 		187EF1EA2917FA6E00D9EB10 /* opcua.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = opcua.c; sourceTree = "<group>"; };
+		187EF1EC2917FE8C00D9EB10 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		187EF1EF291801BF00D9EB10 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
+		187EF1F0291801BF00D9EB10 /* message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message.c; sourceTree = "<group>"; };
+		187EF1F2291804E700D9EB10 /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,10 +74,30 @@
 		187EF1E82917FA3E00D9EB10 /* stack */ = {
 			isa = PBXGroup;
 			children = (
+				187EF1ED2918018E00D9EB10 /* core */,
 				187EF1E92917FA6E00D9EB10 /* opcua.h */,
 				187EF1EA2917FA6E00D9EB10 /* opcua.c */,
 			);
 			path = stack;
+			sourceTree = "<group>";
+		};
+		187EF1ED2918018E00D9EB10 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				187EF1EE2918019700D9EB10 /* message */,
+				187EF1EC2917FE8C00D9EB10 /* types.h */,
+				187EF1F2291804E700D9EB10 /* utility.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		187EF1EE2918019700D9EB10 /* message */ = {
+			isa = PBXGroup;
+			children = (
+				187EF1EF291801BF00D9EB10 /* message.h */,
+				187EF1F0291801BF00D9EB10 /* message.c */,
+			);
+			path = message;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				187EF1F1291801BF00D9EB10 /* message.c in Sources */,
 				187EF1EB2917FA6E00D9EB10 /* opcua.c in Sources */,
 				187EF1E2291725B800D9EB10 /* main.c in Sources */,
 			);

@@ -44,7 +44,7 @@ static MessageType toMessageType(OpcUa_Byte message_type[3])
     return type;
 }
 
-long OpcUa_ParseMsg(void* buf, long len, MessageHeader* pHeader)
+long OpcUa_ParseMessageHeader(void* buf, long len, MessageHeader* pHeader)
 {
     long parsed_len;
     RawMessageHeader* pRawHeader;
@@ -71,6 +71,44 @@ long OpcUa_ParseMsg(void* buf, long len, MessageHeader* pHeader)
     return parsed_len;
 }
 
+typedef struct RawHelloMessageTag
+{
+    OpcUa_UInt32 protocol_version;
+    OpcUa_UInt32 receive_buffer_size;
+    OpcUa_UInt32 send_buffer_size;
+    OpcUa_UInt32 max_message_size;
+    OpcUa_UInt32 max_chunk_count;
+    OpcUa_Int32 endpoint_url_length;
+} RawHelloMessage;
+
+long OpcUa_ParseHelloMessage(void* buf, long len, HelloMessage* pMsg)
+{
+    long parsed_len;
+    RawHelloMessage* pRawMsg;
+
+    if (len < sizeof(RawHelloMessage) || pMsg == 0) {
+        parsed_len = 0;
+    }
+    else {
+        pRawMsg = (RawHelloMessage*)buf;
+        pMsg->protocol_version = pRawMsg->protocol_version;
+        pMsg->receive_buffer_size = pRawMsg->receive_buffer_size;
+        pMsg->send_buffer_size = pRawMsg->send_buffer_size;
+        pMsg->max_message_size = pRawMsg->max_message_size;
+        pMsg->max_chunk_count = pRawMsg->max_chunk_count;
+        if (pRawMsg->endpoint_url_length < 0) {
+            OPCUA_MEMSET(pMsg->endpoint_url, '\0', sizeof(pMsg->endpoint_url));
+            parsed_len = 0;
+        }
+        else {
+            OPCUA_MEMCPY(pMsg->endpoint_url, buf + sizeof(RawHelloMessage), pRawMsg->endpoint_url_length);
+            parsed_len = sizeof(RawHelloMessage) + pRawMsg->endpoint_url_length;
+        }
+    }
+
+    return parsed_len;
+}
+
 const char* OpcUa_GetMessageTypeName(MessageType message_type)
 {
     const char* type_name;
@@ -89,7 +127,7 @@ const char* OpcUa_GetMessageTypeName(MessageType message_type)
             type_name = "ReverseHello Message";
             break;
         default:
-            ASSERT(0);
+            OPCUA_ASSERT(0);
             type_name = "";
             break;
     }

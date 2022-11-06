@@ -18,7 +18,18 @@ typedef struct MessageHeaderTag
     OpcUa_UInt32 message_size;
 } MessageHeader;
 
-long OpcUa_ParseMsg(void* buf, long len, MessageHeader* pHeader);
+typedef struct HelloMessageTag
+{
+    OpcUa_UInt32 protocol_version;
+    OpcUa_UInt32 receive_buffer_size;
+    OpcUa_UInt32 send_buffer_size;
+    OpcUa_UInt32 max_message_size;
+    OpcUa_UInt32 max_chunk_count;
+    OpcUa_Char endpoint_url[4096];
+} HelloMessage;
+
+long OpcUa_ParseMessageHeader(void* buf, long len, MessageHeader* pHeader);
+long OpcUa_ParseHelloMessage(void* buf, long len, HelloMessage* pMsg);
 const char* OpcUa_GetMessageTypeName(MessageType message_type);
 
 #endif /* opcua_message_h */
