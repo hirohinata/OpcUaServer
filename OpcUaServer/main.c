@@ -2,12 +2,12 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include "stack/opcua.h"
 
 int main(int argc, const char * argv[])
 {
     int sockfd;
     int sock;
-    int i;
     struct sockaddr_in addr;
     struct sockaddr_in client;
     struct sockaddr_in from;
@@ -38,11 +38,8 @@ int main(int argc, const char * argv[])
             printf("disconnected.\n");
             break;
         }
-        
-        for (i = 0; i < resvlen; ++i) {
-            printf("%02x ", (unsigned char)buf[i]);
-        }
-        puts("\n");
+
+        OpcUa_RecvMsg(buf, resvlen);
     }
     
     close(sock);

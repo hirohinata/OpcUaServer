@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		187EF1E2291725B800D9EB10 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 187EF1E1291725B800D9EB10 /* main.c */; };
+		187EF1EB2917FA6E00D9EB10 /* opcua.c in Sources */ = {isa = PBXBuildFile; fileRef = 187EF1EA2917FA6E00D9EB10 /* opcua.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		187EF1DE291725B800D9EB10 /* OpcUaServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpcUaServer; sourceTree = BUILT_PRODUCTS_DIR; };
 		187EF1E1291725B800D9EB10 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		187EF1E92917FA6E00D9EB10 /* opcua.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = opcua.h; sourceTree = "<group>"; };
+		187EF1EA2917FA6E00D9EB10 /* opcua.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = opcua.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +60,19 @@
 		187EF1E0291725B800D9EB10 /* OpcUaServer */ = {
 			isa = PBXGroup;
 			children = (
+				187EF1E82917FA3E00D9EB10 /* stack */,
 				187EF1E1291725B800D9EB10 /* main.c */,
 			);
 			path = OpcUaServer;
+			sourceTree = "<group>";
+		};
+		187EF1E82917FA3E00D9EB10 /* stack */ = {
+			isa = PBXGroup;
+			children = (
+				187EF1E92917FA6E00D9EB10 /* opcua.h */,
+				187EF1EA2917FA6E00D9EB10 /* opcua.c */,
+			);
+			path = stack;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +132,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				187EF1EB2917FA6E00D9EB10 /* opcua.c in Sources */,
 				187EF1E2291725B800D9EB10 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
