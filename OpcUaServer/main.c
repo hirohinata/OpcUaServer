@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "stack/opcua.h"
+#include "stack/core/status_code.h"
 
 int main(int argc, const char * argv[])
 {
@@ -13,7 +14,8 @@ int main(int argc, const char * argv[])
     struct sockaddr_in from;
     socklen_t len;
     socklen_t fromlen;
-    ssize_t resvlen;
+    ssize_t recvlen;
+    ssize_t sendlen;
     char buf[256] = { 0 };
 
     sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -32,14 +34,27 @@ int main(int argc, const char * argv[])
     printf("connected.\n");
 
     for (;;) {
+        printf("wait...");
         fromlen = sizeof(from);
-        resvlen = recvfrom(sock, buf, sizeof(buf), MSG_WAITALL, (struct sockaddr *)&from, &fromlen);
-        if (resvlen <= 0) {
+        recvlen = recvfrom(sock, buf, sizeof(buf), 0, (struct sockaddr *)&from, &fromlen);
+        if (recvlen <= 0) {
             printf("disconnected.\n");
             break;
         }
 
-        OpcUa_RecvMsg(buf, resvlen);
+        printf("recieved.\n");
+        OpcUa_RecvMsg(buf, recvlen);
+
+        // send error message.
+        sendlen = 16;
+        buf[0] = 'E';
+        buf[1] = 'R';
+        buf[2] = 'R';
+        buf[3] = 'F';
+        *(unsigned int*)(&buf[4]) = (unsigned int)sendlen;
+        *(unsigned int*)(&buf[8]) = (unsigned int)BadResponseTooLarge;
+        *(int*)(&buf[12]) = 0;
+        sendto(sock, buf, sendlen, 0, (const struct sockaddr *)&client, len);
     }
     
     close(sock);
