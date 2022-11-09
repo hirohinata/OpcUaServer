@@ -33,6 +33,8 @@
 		187EF1EF291801BF00D9EB10 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
 		187EF1F0291801BF00D9EB10 /* message.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = message.c; sourceTree = "<group>"; };
 		187EF1F2291804E700D9EB10 /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		187EF1F3291C01D900D9EB10 /* StatusCode.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = StatusCode.csv; sourceTree = "<group>"; };
+		187EF1F4291C021300D9EB10 /* status_code.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = status_code.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				187EF1EE2918019700D9EB10 /* message */,
+				187EF1F4291C021300D9EB10 /* status_code.h */,
+				187EF1F3291C01D900D9EB10 /* StatusCode.csv */,
 				187EF1EC2917FE8C00D9EB10 /* types.h */,
 				187EF1F2291804E700D9EB10 /* utility.h */,
 			);
