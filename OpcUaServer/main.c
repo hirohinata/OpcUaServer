@@ -45,15 +45,25 @@ int main(int argc, const char * argv[])
         printf("recieved.\n");
         OpcUa_RecvMsg(buf, recvlen);
 
-        // send error message.
-        sendlen = 16;
-        buf[0] = 'E';
-        buf[1] = 'R';
-        buf[2] = 'R';
+        // send ack message.
+        sendlen = 28;
+        buf[0] = 'A';
+        buf[1] = 'C';
+        buf[2] = 'K';
         buf[3] = 'F';
         *(unsigned int*)(&buf[4]) = (unsigned int)sendlen;
-        *(unsigned int*)(&buf[8]) = (unsigned int)BadResponseTooLarge;
-        *(int*)(&buf[12]) = 0;
+        {
+            const unsigned int ProtocolVersion = 0;
+            const unsigned int ReceiveBufferSize = 256;
+            const unsigned int SendBufferSize = 256;
+            const unsigned int MaxMessageSize = 0;
+            const unsigned int MaxChunkCount = 0;
+            *(unsigned int*)(&buf[8]) = ProtocolVersion;
+            *(unsigned int*)(&buf[12]) = ReceiveBufferSize;
+            *(unsigned int*)(&buf[16]) = SendBufferSize;
+            *(unsigned int*)(&buf[20]) = MaxMessageSize;
+            *(unsigned int*)(&buf[24]) = MaxChunkCount;
+        }
         sendto(sock, buf, sendlen, 0, (const struct sockaddr *)&client, len);
     }
     
