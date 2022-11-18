@@ -11,34 +11,27 @@ typedef struct RawMessageHeaderTag
 static MessageType toMessageType(OpcUa_Byte message_type[3])
 {
     MessageType type;
-    
-    if (message_type[0] == 'H' &&
-        message_type[1] == 'E' &&
-        message_type[2] == 'L')
-    {
-        type = HELLO_MESSAGE;
-    }
-    else if (message_type[0] == 'A' &&
-             message_type[1] == 'C' &&
-             message_type[2] == 'K')
-    {
-        type = ACKNOWLEDGE_MESSAGE;
-    }
-    else if (message_type[0] == 'E' &&
-             message_type[1] == 'R' &&
-             message_type[2] == 'R')
-    {
-        type = ERROR_MESSAGE;
-    }
-    else if (message_type[0] == 'R' &&
-             message_type[1] == 'H' &&
-             message_type[2] == 'E')
-    {
-        type = REVERSE_HELLO_MESSAGE;
-    }
-    else
-    {
-        type = INVALID_MESSAGE_TYPE;
+    int i;
+
+    const struct MessageTypeTable {
+        OpcUa_Byte code[3];
+        MessageType type;
+    } table[] = {
+        { { 'H', 'E', 'L' }, HELLO_MESSAGE },
+        { { 'A', 'C', 'K' }, ACKNOWLEDGE_MESSAGE },
+        { { 'E', 'R', 'R' }, ERROR_MESSAGE },
+        { { 'R', 'H', 'E' }, REVERSE_HELLO_MESSAGE },
+    };
+
+    type = INVALID_MESSAGE_TYPE;
+    for (i = 0; i < sizeof(table) / sizeof(table[0]); ++i) {
+        if (message_type[0] == table[i].code[0] &&
+            message_type[1] == table[i].code[1] &&
+            message_type[2] == table[i].code[2])
+        {
+            type = table[i].type;
+            break;
+        }
     }
 
     return type;
