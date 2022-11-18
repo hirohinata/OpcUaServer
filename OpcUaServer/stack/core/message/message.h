@@ -10,6 +10,9 @@ typedef enum MessageTypeTag
     ACKNOWLEDGE_MESSAGE,
     ERROR_MESSAGE,
     REVERSE_HELLO_MESSAGE,
+    SECURED_MESSAGE,
+    OPEN_SECURE_CHANNEL_MESSAGE,
+    CLOSE_SECURE_CHANNEL_MESSAGE,
 } MessageType;
 
 typedef struct MessageHeaderTag

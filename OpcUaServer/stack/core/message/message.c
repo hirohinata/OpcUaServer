@@ -21,6 +21,9 @@ static MessageType toMessageType(OpcUa_Byte message_type[3])
         { { 'A', 'C', 'K' }, ACKNOWLEDGE_MESSAGE },
         { { 'E', 'R', 'R' }, ERROR_MESSAGE },
         { { 'R', 'H', 'E' }, REVERSE_HELLO_MESSAGE },
+        { { 'M', 'S', 'G' }, SECURED_MESSAGE },
+        { { 'O', 'P', 'N' }, OPEN_SECURE_CHANNEL_MESSAGE },
+        { { 'C', 'L', 'O' }, CLOSE_SECURE_CHANNEL_MESSAGE },
     };
 
     type = INVALID_MESSAGE_TYPE;
@@ -118,6 +121,15 @@ const char* OpcUa_GetMessageTypeName(MessageType message_type)
             break;
         case REVERSE_HELLO_MESSAGE:
             type_name = "ReverseHello Message";
+            break;
+        case SECURED_MESSAGE:
+            type_name = "A Message secured with the keys associated with a channel";
+            break;
+        case OPEN_SECURE_CHANNEL_MESSAGE:
+            type_name = "OpenSecureChannel Message";
+            break;
+        case CLOSE_SECURE_CHANNEL_MESSAGE:
+            type_name = "CloseSecureChannel Message";
             break;
         default:
             OPCUA_ASSERT(0);
