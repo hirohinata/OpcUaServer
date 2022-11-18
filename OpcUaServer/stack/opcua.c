@@ -2,36 +2,57 @@
 #include "message.h"
 #include <stdio.h>
 
-void OpcUa_RecvMsg(void* buf, long len)
+static long parseMessageHeader(void* buf, long len, MessageHeader* pHeader)
 {
-    MessageHeader header;
-    HelloMessage helloMessage;
     long parsed_len;
-    int i;
 
-    parsed_len = OpcUa_ParseMessageHeader(buf, len, &header);
+    parsed_len = OpcUa_ParseMessageHeader(buf, len, pHeader);
     if (parsed_len <= 0) {
         puts("Not Supported Message.\n");
-        return;
+        parsed_len = 0;
     }
-    printf("MessageType : %s\n", OpcUa_GetMessageTypeName(header.message_type));
-    printf("MessageSize : %u\n", header.message_size);
+    else {
+        printf("MessageType : %s\n", OpcUa_GetMessageTypeName(pHeader->message_type));
+        printf("MessageSize : %u\n", pHeader->message_size);
+    }
 
-    buf += parsed_len;
-    len -= parsed_len;
+    return parsed_len;
+}
 
-    if (header.message_type == HELLO_MESSAGE) {
-        parsed_len = OpcUa_ParseHelloMessage(buf, len, &helloMessage);
-        if (parsed_len <= 0) {
-            puts("Not Supported Hello Message.\n");
-            return;
-        }
+static long parseHelloMessage(void* buf, long len)
+{
+    HelloMessage helloMessage;
+    long parsed_len;
+
+    parsed_len = OpcUa_ParseHelloMessage(buf, len, &helloMessage);
+    if (parsed_len <= 0) {
+        puts("Not Supported Hello Message.\n");
+        parsed_len = 0;
+    }
+    else {
         printf("ProtocolVersion : %u\n", helloMessage.protocol_version);
         printf("ReceiveBufferSize : %u\n", helloMessage.receive_buffer_size);
         printf("SendBufferSize : %u\n", helloMessage.send_buffer_size);
         printf("MaxMessageSize : %u\n", helloMessage.max_message_size);
         printf("MaxChunkCount : %u\n", helloMessage.max_chunk_count);
         printf("EndpointUrl : %s\n", helloMessage.endpoint_url);
+    }
+
+    return parsed_len;
+}
+
+void OpcUa_RecvMsg(void* buf, long len)
+{
+    MessageHeader header = { 0 };
+    long parsed_len = 0;
+    int i = 0;
+
+    parsed_len = parseMessageHeader(buf, len, &header);
+    buf += parsed_len;
+    len -= parsed_len;
+
+    if (header.message_type == HELLO_MESSAGE) {
+        parsed_len = parseHelloMessage(buf, len);
         buf += parsed_len;
         len -= parsed_len;
     }
