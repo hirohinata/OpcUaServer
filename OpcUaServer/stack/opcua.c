@@ -13,7 +13,9 @@ static long parseMessageHeader(void* buf, long len, MessageHeader* pHeader)
     }
     else {
         printf("MessageType : %s\n", OpcUa_GetMessageTypeName(pHeader->message_type));
+        printf("ChunkTtype : %c\n", pHeader->chunk_type);
         printf("MessageSize : %u\n", pHeader->message_size);
+        printf("SecureChannelId : %u\n", pHeader->secure_channel_id);
     }
 
     return parsed_len;

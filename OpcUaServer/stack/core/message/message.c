@@ -4,7 +4,7 @@
 typedef struct RawMessageHeaderTag
 {
     OpcUa_Byte message_type[3];
-    OpcUa_Byte reserved;
+    OpcUa_Byte chunk_type;
     OpcUa_UInt32 message_size;
 } RawMessageHeader;
 
@@ -40,27 +40,72 @@ static MessageType toMessageType(OpcUa_Byte message_type[3])
     return type;
 }
 
+static ChunkType toChunkType(OpcUa_Byte chunk_type)
+{
+    ChunkType type;
+
+    switch (chunk_type)
+    {
+        case 'C':
+            type = INTERMEDIATE_CHUNK;
+            break;
+        case 'F':
+            type = FINAL_CHUNK;
+            break;
+        case 'A':
+            type = ABORTED_CHUNK;
+            break;
+        default:
+            type = INVALID_CHUNK_TYPE;
+            break;
+    }
+
+    return type;
+}
+
 long OpcUa_ParseMessageHeader(void* buf, long len, MessageHeader* pHeader)
 {
     long parsed_len;
     RawMessageHeader* pRawHeader;
 
-    if (len < sizeof(MessageHeader) || pHeader == 0) {
+    if (len < sizeof(RawMessageHeader) || pHeader == 0) {
         parsed_len = 0;
     }
     else {
         pRawHeader = (RawMessageHeader*)buf;
         pHeader->message_type = toMessageType(pRawHeader->message_type);
+        pHeader->chunk_type = toChunkType(pRawHeader->chunk_type);
         pHeader->message_size = pRawHeader->message_size;
 
-        if (pHeader->message_type == INVALID_MESSAGE_TYPE ||
-            pRawHeader->reserved != 'F')
-        {
-            parsed_len = 0;
-        }
-        else
-        {
-            parsed_len = sizeof(RawMessageHeader);
+        switch (pHeader->message_type) {
+            case HELLO_MESSAGE:
+            case ACKNOWLEDGE_MESSAGE:
+            case ERROR_MESSAGE:
+            case REVERSE_HELLO_MESSAGE:
+                if (pHeader->chunk_type == FINAL_CHUNK) {
+                    pHeader->secure_channel_id = (OpcUa_UInt32)-1;
+                    parsed_len = sizeof(RawMessageHeader);
+                }
+                else {
+                    parsed_len = 0;
+                }
+                break;
+            case SECURED_MESSAGE:
+            case OPEN_SECURE_CHANNEL_MESSAGE:
+            case CLOSE_SECURE_CHANNEL_MESSAGE:
+                if (pHeader->chunk_type != INVALID_CHUNK_TYPE &&
+                    sizeof(RawMessageHeader) + sizeof(OpcUa_UInt32) <= len) {
+                    pHeader->secure_channel_id = *(OpcUa_UInt32*)((char*)buf + sizeof(RawMessageHeader));
+                    parsed_len = sizeof(RawMessageHeader) + sizeof(OpcUa_UInt32);
+                }
+                else {
+                    parsed_len = 0;
+                }
+                break;
+            case INVALID_MESSAGE_TYPE:
+            default:
+                parsed_len = 0;
+                break;
         }
     }
 
