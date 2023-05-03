@@ -1,5 +1,5 @@
 #include "opcua.h"
-#include "message.h"
+#include "core/message/message.h"
 #include <stdio.h>
 
 static long parseMessageHeader(void* buf, long len, MessageHeader* pHeader)

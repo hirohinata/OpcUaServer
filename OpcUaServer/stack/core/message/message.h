@@ -1,7 +1,7 @@
 #ifndef opcua_message_h
 #define opcua_message_h
 
-#include "types.h"
+#include "../types.h"
 
 typedef enum MessageTypeTag
 {
