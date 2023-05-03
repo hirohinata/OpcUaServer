@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <unistd.h>
 #include "stack/opcua.h"
 #include "stack/core/status_code.h"
 
