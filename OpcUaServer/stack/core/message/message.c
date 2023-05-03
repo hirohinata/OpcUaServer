@@ -184,3 +184,28 @@ const char* OpcUa_GetMessageTypeName(MessageType message_type)
 
     return type_name;
 }
+
+const char* OpcUa_GetChunkTypeName(ChunkType chunk_type)
+{
+    const char* type_name;
+
+    switch (chunk_type) {
+        case INVALID_CHUNK_TYPE:
+            type_name = "Invalid Chunk";
+            break;
+        case INTERMEDIATE_CHUNK:
+            type_name = "Intermediate Chunk";
+            break;
+        case FINAL_CHUNK:
+            type_name = "Final Chunk";
+            break;
+        case ABORTED_CHUNK:
+            type_name = "Aborted Chunk";
+            break;
+        default:
+            OPCUA_ASSERT(0);
+            type_name = "";
+            break;
+    }
+    return type_name;
+}

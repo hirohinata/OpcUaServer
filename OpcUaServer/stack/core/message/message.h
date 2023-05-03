@@ -49,5 +49,6 @@ typedef struct AsymmetricAlgorithmSecurityHeaderTag
 long OpcUa_ParseMessageHeader(void* buf, long len, MessageHeader* pHeader);
 long OpcUa_ParseHelloMessage(void* buf, long len, HelloMessage* pMsg);
 const char* OpcUa_GetMessageTypeName(MessageType message_type);
+const char* OpcUa_GetChunkTypeName(ChunkType chunk_type);
 
 #endif /* opcua_message_h */
